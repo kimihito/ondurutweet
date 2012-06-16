@@ -67,6 +67,21 @@ function updateTimeline (timeline) {
     currentData.push(row);
   }
   tableView.setData(currentData);
+
+  tableView.addEventListener(
+      'click',
+      function(e) {
+        var tweet = timeline[e.index];
+        var webWindow = Ti.UI.createWindow(
+          {
+            url: 'tweet_window.js',
+            status_id: tweet.id_str,
+            screen_name: tweet.user.screen_name
+          }
+          );
+        Ti.UI.currentTab.open(webWindow);
+        }
+      );
 }
 
 var xhr = Ti.Network.createHTTPClient();
@@ -98,7 +113,31 @@ messageButton.addEventListener(
       backgroundColor: '#fff'
         }
         );
-      messageWindow.open();
+      Ti.UI.currentTab.open(messageWindow);
     }
 );
 win1.rightNavButton = messageButton;
+
+Ti.include("twitter_settings.js");
+//Ti.include("tweet_db.js");
+Ti.include("lib/twitter_api.js");
+
+//initialization
+Ti.App.twitterApi = new TwitterApi(
+    {
+      consumerKey: TwitterSettings.consumerKey,
+      consumerSecret: TwitterSettings.cosumerSecret
+    }
+);
+var twitterApi = Ti.App.twitterApi;
+twitterApi.init();
+twitterApi.statuses_home_timeline(
+    {
+      onSuccess: function(response){
+        updateTimeline(db.savedTweets());
+      },
+      onError: function(error){
+        Ti.API.error(error);
+      }
+    }
+    );
