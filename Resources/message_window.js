@@ -1,3 +1,13 @@
+Ti.include("lib/twitter_api.js");
+//initialization
+Ti.App.twitterApi = new TwitterApi({
+  consumerKey: '0C1bKC84Q3ZpIGsZLSu7A',
+  counsumerSecret: 'XfuEkOgtdqN42k7WDEHkoclsXZE263mKpckIxS4E'
+});
+
+var twitterApi = Ti.App.twitterApi;
+twitterApi.init();
+
 var win = Ti.UI.currentWindow;
 var textArea = Ti.UI.createTextArea(
     {
@@ -21,7 +31,17 @@ var postButton = Ti.UI.createButton(
     title: 'POST'
     }
     );
+
+
+Ti.include("lib/twitter_api.js");
+//initialization
+Ti.App.twitterApiL= new TwitterApi({
+  consumerKey: 'ekrL8X8sy8WiSDrpsUImQ',
+  counsumerSecret: 'LvIutOsRgDH0HAV4D1wKE8hRGCAFEow2iCEHpZy4uwQ'
+});
+
 var twitterApi = Ti.App.twitterApi;
+twitterApi.init();
 
 var latitude;
 var longitude;
@@ -33,7 +53,7 @@ function tweet(message){
   }
   twitterApi.statuses_update(
       {
-        onsuccess: function(response){
+        onsuccess: function(responce){
           alert('tweet success');
           Ti.Api.info(responce);
         },
@@ -65,7 +85,6 @@ var mapview = Titanium.Map.createView(
     region:{latitude:40.0, longitude:130, latitudeDelta:30,longitudeDelta:30},
     animate:true,
     regionfit:true,
-    userLocation:true
     }    
     );
 mapview.hide();
