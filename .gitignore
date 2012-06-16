@@ -7,3 +7,4 @@ build/
 build.log
 .DS_Store
 .settings
+*.swp
